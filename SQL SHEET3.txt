@@ -14,7 +14,8 @@ INSERT INTO EMP VALUES
 
 ------- annual salary information provided by emp table. How to fetch monthly salary of each and every employee
 
-
+SELECT ENAME, (SALARY/12) AS 'Monthly Salary' ,
+SALARY AS 'Annual Salary' FROM EMP ;
 
 
 --Select all record from emp table where deptno =10 or 40
@@ -62,7 +63,8 @@ SELECT * FROM EMP
 
 
  ---- In emp table add comm+sal as total sal -----
-
+ALTER TABLE emp ADD Department varchar(20);
+select Sum(salary) from emp;
 
 
 
