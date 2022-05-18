@@ -1,0 +1,78 @@
+create proc sp_EmpC 
+@Action varchar(20),  
+@CountyId int=0,  
+@Name varchar(50)=null,
+@States varchar(50),
+@City varchar(30)
+as  
+begin  
+if @Action='create'  
+   begin  
+   insert into Employee (Name) values (@Name)  
+   end  
+else if @Action='Select'  
+   begin  
+   select a.Name,b.Name,c.Name from Country as a inner join States as b on
+   a.CountyId=b.CountyId inner join City as c on b.StateId=c.StateId
+   end  
+end
+
+
+create table Country(CountyId int primary key identity,Name varchar(50))
+insert into Country values('India'),
+('Australia')
+select * from Country
+
+create table States(StateId int primary key identity,Name varchar(60), CountyId int foreign key references Country(CountyId))
+insert into States values('Utter Pradesh',1),
+('Sydney',2),
+('MP',1),
+('Melbourne',2)
+select * from States
+update States set  Name='South Australia' where StateId=4
+
+create table City(CityId int primary key identity,Name varchar(50), StateId int foreign key references States(StateId))
+insert into City values ('Noida',1),
+('Sydney',2),
+('Bhopalda',3),
+('Adelaide',4)
+select* from Country as a inner join States as b on a.CountyId=b.CountyId inner join  City as c on b.StateId=c.StateId
+
+create table Shop(Id int primary key identity,Category varchar(50),Sub_Category varchar(60),Child_Sub_Category varchar(80))
+insert into Shop values ('Electranics','Smart Phone','Phone')
+select * from Shop
+
+create proc sp_EmpC 
+@Action varchar(20),  
+@Id int=0,  
+@Name varchar(50)=null,
+@Email varchar(50)=null,
+@Mobile varchar(20)=null,
+@address varchar(50)=null,
+@Gender varchar(10)=null,
+@IsActive bit=null
+as  
+begin  
+if @Action='create'  
+   begin  
+   insert into Employee(Name,Email,Mobile,address,Gender,IsActive) values
+   (@Name,@Email,@Mobile,@address,@Gender,@IsActive)  
+   end  
+else if @Action='Update'  
+   begin  
+   update Employee set Name=IsNull(@Name,Name),Email=IsNull(@Email,Email),Mobile=IsNull(@Mobile,Mobile),address=IsNull(@address,Address)
+   ,Gender=IsNull(@Gender,Gender),IsActive=IsNull(@IsActive,IsActive) where Id=@Id  
+   end  
+else if @Action='Delete'  
+   begin  
+   update Employee set IsActive=@IsActive where Id=@Id  
+   end  
+else if @Action='Select'  
+   begin  
+   select * from Employee 
+   end  
+else if @Action='Select_one'  
+   begin  
+   select * from Employee where Id=@Id 
+   end  
+end
