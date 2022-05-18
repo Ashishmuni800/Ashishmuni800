@@ -1,0 +1,87 @@
+create database akk
+use  akk
+
+
+
+
+Create table Emp(Id  int primary key identity,
+Name varchar(70),
+Email varchar(90),
+Mobile varchar(60),
+Adress Varchar(40),
+Gender varchar(80),
+IsActive bit,
+dptid int foreign key references Department(Id))
+
+
+
+Create table Department(Id  int primary key identity,
+Name Varchar(50))
+select * from emp
+
+sp_emp 'Insert',0,'Ankit','ashish@gmail.com','3445653344','noida','male',1,1
+alter proc sp_emp
+@action varchar(60),
+@Id int=0,
+@Name varchar(70)=null,
+@Email varchar(90)=null,
+@mobile varchar(50)=null,
+@Adress varchar(100)=null,
+@Gender varchar(20)=null,
+@IsActive bit=null,
+@dptid int= null
+as
+begin
+if @action='create'
+begin
+Insert into emp(Name,Email,Mobile,Adress,Gender,IsActive,dptid)values(@Name,@Email,@mobile,@Adress,@Gender,@IsActive,@dptid)
+end
+else if @action='Select_one'
+begin
+Select * from emp Where id=@Id
+end
+else if @action='Update'
+begin
+Update emp set Name=@Name,Email=@Email,Mobile=@mobile,Adress=@Adress,Gender=@Gender,IsActive=@IsActive where id =@id
+end
+else if @action='Delete'
+begin
+Delete From Emp where Id =@id
+end
+else if @action='select'
+begin
+select a.id,a.Name,a.Email,a.Adress,a.Adress,a.Gender,a.IsActive,a.dptid,
+b.Name from emp a
+inner Join department b on
+a.Id=b.Id
+end
+end
+Sp_Department 'Create',0,'anl'
+
+Create proc Sp_Department
+@action varchar(40),
+@id int=0,
+@Name varchar(50)
+as 
+begin
+if @action='Create'
+begin
+insert Into Department(Name)Values(@Name)
+end
+if @action='Select'
+begin
+Select * from Department
+end
+if @action='Select_one'
+begin
+Select * from Department where Id=@id
+end
+if @action='Update'
+begin
+update Department set Name=@Name where id=@id
+end
+if @action='Delete'
+begin
+delete from Department where id =@id
+end
+end
